@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Pankaj",
+    "email": "pankajdumka1@gmail.com",
+    "signedAt": "2025-11-23T08:03:01.660Z"
+  },
+  {
+    "type": "location",
+    "value": {
+      "country": "India"
+    },
+    "at": "2025-11-23T08:03:12.471Z"
+  }
+]

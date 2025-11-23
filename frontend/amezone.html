@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amezone</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+  <header>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="navlogo border">
+        <div class="logo"></div>
+      </div>
+
+      <div id="navAddress" class="navaddress border" role="button" tabindex="0">
+        <p class="add1">Deliver to</p>
+        <div class="addressicon">
+          <i class="fa-solid fa-location-dot"></i>
+          <p class="add2">India</p>
+        </div>
+      </div>
+
+      
+        <div class="navsearch" id="navsearch">
+          <select class="searcselect" id="navCategorySelect">
+            <option value="">All</option>
+          </select>
+          <input id="searchInput" class="selectinput" placeholder="Search Amezone">
+          <div class="searchitem" id="searchBtn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <button class="mobile-search-toggle" id="mobileSearchToggle" aria-label="Open search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+
+      <div id="navSignin" class="navsignin border" role="button" tabindex="0">
+        <p><span>Hello, sign in</span></p>
+        <p class="navsecond">Account & Lists</p>
+      </div>
+
+      <div class="navreturn border">
+        <p><span>Returns</span></p>
+        <p>& Orders</p>
+      </div>
+
+      <div class="navcart border">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Cart <span id="cartCount" class="cart-count">0</span></p>
+      </div>
+    </div>
+
+    <!-- Panel -->
+    <div class="panel">
+      <div class="panelall">
+        <i class="fa-solid fa-bars"></i>
+        All
+      </div>
+
+      <div class="pannelop">
+        <p id="todaysDeal">Today's Deal</p>
+        <p id="customerService">Customer Service</p>
+        <p id="registry">Registry</p>
+        <p id="giftCardsBtn">Gift Cards</p>
+        <p id="authorBtn">Author</p>
+        <p id="sell">Sell</p>
+      </div>
+
+      <div class="panneldeals">
+        Shop deals in Electronics
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="herosection">
+    <div class="heromessage">
+      <p>Welcome to Amezone! Enjoy shopping the best products online.
+        <a href="#">Click here to visit amazon.in</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Products / Shop Section -->
+  <div class="shopsection">
+
+    <!-- Product render target -->
+      <div id="resultsInfo" style="max-width:1200px;margin:0 auto 10px;color:#333;font-weight:600;display:flex;align-items:center;gap:12px;justify-content:space-between;">
+        <div id="resultsText" aria-live="polite" style="font-weight:700;color:#222"></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <label for="perPageSelect" style="font-size:0.95rem;color:#333">Results per page</label>
+          <select id="perPageSelect" aria-label="Results per page">
+            <option value="20">20</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+      <div id="productGrid" class="product-grid" role="list" aria-live="polite"></div>
+
+    <div style="text-align:center;margin-top:12px; width:100%">
+      <button id="loadMoreBtn" class="btn">Load more</button>
+    </div>
+
+    <!-- Location modal -->
+    <div id="locationModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+      <div class="cart-modal">
+        <header class="cart-header">
+          <h3>Set delivery location</h3>
+          <button id="closeLocation" class="btn close">✕</button>
+        </header>
+        <div class="cart-items" style="padding:12px">
+          <form id="locationForm">
+            <select name="country" id="countrySelect">
+              <option>India</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Australia</option>
+            </select>
+            <div style="display:flex;justify-content:flex-end;margin-top:12px">
+              <button type="submit" class="btn primary">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign-in modal -->
+    <div id="signinModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+      <div class="cart-modal">
+        <header class="cart-header">
+          <h3>Sign in</h3>
+          <button id="closeSignin" class="btn close">✕</button>
+        </header>
+        <div class="cart-items" style="padding:12px">
+          <form id="signinForm">
+            <input name="name" placeholder="Your name" required />
+            <input name="email" type="email" placeholder="Email" required />
+            <div style="display:flex;justify-content:flex-end;margin-top:12px">
+              <button type="submit" class="btn primary">Sign in</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Cart modal -->
+  <div id="cartOverlay" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3>Your Cart</h3>
+        <button id="closeCart" class="btn close">✕</button>
+      </header>
+      <div id="cartItems" class="cart-items"></div>
+      <footer class="cart-footer">
+        <div class="cart-total">Total: <span id="cartTotal">₹0</span></div>
+        <div class="cart-actions">
+          <button id="clearCart" class="btn">Clear</button>
+          <button id="checkoutBtn" class="btn primary">Checkout</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  
+
+  <!-- Gift card modal -->
+  <div id="giftModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3>Gift Cards</h3>
+        <button id="closeGift" class="btn close">✕</button>
+      </header>
+      <div class="cart-items" style="padding:12px">
+        <form id="giftForm">
+          <input name="recipient" placeholder="Recipient email" type="email" required />
+          <input name="amount" placeholder="Amount (₹)" type="number" required />
+          <div style="display:flex;justify-content:flex-end;margin-top:12px">
+            <button type="submit" class="btn primary">Send Gift</button>
+          </div>
+        </form>
+        <div id="giftMsg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Author modal (book author filter) -->
+  <div id="authorModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3>Find by Author</h3>
+        <button id="closeAuthor" class="btn close">✕</button>
+      </header>
+      <div class="cart-items" style="padding:12px">
+        <form id="authorForm">
+          <input name="author" placeholder="Author name" required />
+          <div style="display:flex;justify-content:flex-end;margin-top:12px">
+            <button type="submit" class="btn primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product details modal -->
+  <div id="detailsModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3 id="detailsTitle">Product</h3>
+        <button id="closeDetails" class="btn close">✕</button>
+      </header>
+      <div class="cart-items" id="detailsBody"></div>
+      <footer class="cart-footer">
+        <div class="cart-actions">
+          <button id="detailsAdd" class="btn primary">Add to cart</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Bottom description bar (site summary, quick links) -->
+  <div class="bottom-description" role="region" aria-label="Site description">
+    <div class="desc-inner">
+      <div class="desc-text">
+        <strong>Amezone</strong> — Demo shopping site with products, deals, and fast search. This project is a functional prototype for learning and testing.
+      </div>
+      <div class="desc-links">
+        <a href="#" id="descAbout">About</a>
+        <a href="#" id="descPrivacy">Privacy</a>
+        <a href="#" id="descHelp">Help</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sell modal -->
+  <div id="sellModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3>Sell on Amezone</h3>
+        <button id="closeSell" class="btn close">✕</button>
+      </header>
+      <div class="cart-items" style="padding:12px">
+        <form id="sellForm">
+          <input name="sellerName" placeholder="Your name" required />
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="productName" placeholder="Product name" required />
+          <textarea name="details" placeholder="Short details" required></textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:12px">
+            <button type="submit" class="btn primary">Submit</button>
+          </div>
+        </form>
+        <div id="sellMsg"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Returns & Orders modal -->
+  <div id="returnsModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3>Returns & Orders</h3>
+        <button id="closeReturns" class="btn close">✕</button>
+      </header>
+      <div class="cart-items" style="padding:12px">
+        <p>Enter your order id or email to look up recent orders (demo).</p>
+        <form id="returnsForm" style="margin-top:8px">
+          <input name="orderId" placeholder="Order ID (optional)" />
+          <input name="email" type="email" placeholder="Email (optional)" />
+          <div style="display:flex;justify-content:flex-end;margin-top:12px">
+            <button type="submit" class="btn primary">Lookup</button>
+          </div>
+        </form>
+        <div id="returnsMsg" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Bottom navigation (mobile-style) -->
+  <nav id="bottomNav" class="bottom-nav" aria-label="Bottom navigation">
+    <button class="bn-btn" id="bnHome" aria-label="Home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </button>
+    <button class="bn-btn" id="bnCategories" aria-label="Categories">
+      <i class="fa-solid fa-list"></i>
+      <span>Categories</span>
+    </button>
+    <button class="bn-btn" id="bnDeals" aria-label="Deals">
+      <i class="fa-solid fa-tag"></i>
+      <span>Deals</span>
+    </button>
+    <button class="bn-btn" id="bnGift" aria-label="Gift Cards">
+      <i class="fa-solid fa-gift"></i>
+      <span>Gift</span>
+    </button>
+    <button class="bn-btn" id="bnCart" aria-label="Cart">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span>Cart</span>
+      <strong id="bnCartCount" class="bn-cart-count">0</strong>
+    </button>
+  </nav>
+
+  <!-- Contact modal (re-added) -->
+  <div id="contactModal" class="cart-overlay hidden" role="dialog" aria-modal="true">
+    <div class="cart-modal">
+      <header class="cart-header">
+        <h3>Contact Us</h3>
+        <button id="closeContact" class="btn close">✕</button>
+      </header>
+      <div class="cart-items">
+        <form id="contactFormModal">
+          <input name="name" placeholder="Your name" required />
+          <input name="email" type="email" placeholder="Your email" required />
+          <textarea name="message" placeholder="Message" required></textarea>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button type="submit" class="btn primary">Send</button>
+            <button type="button" id="contactCancel" class="btn">Cancel</button>
+          </div>
+        </form>
+        <div id="contactMsgModal" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Contact Button -->
+  <button id="openContactBtn" class="floating-contact" aria-label="Contact us">Contact</button>
+</body>
+</html>
+
+  <!-- Site footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>Get to Know Us</h4>
+        <ul class="footer-links">
+          <li><a href="#">About Amazon</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press Releases</a></li>
+          <li><a href="#">Amazon Science</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect with Us</h4>
+        <ul class="footer-links">
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Make Money with Us</h4>
+        <ul class="footer-links">
+          <li><a href="#">Sell on Amazon</a></li>
+          <li><a href="#">Sell under Amazon Accelerator</a></li>
+          <li><a href="#">Protect and Build Your Brand</a></li>
+          <li><a href="#">Amazon Global Selling</a></li>
+          <li><a href="#">Supply to Amazon</a></li>
+          <li><a href="#">Become an Affiliate</a></li>
+          <li><a href="#">Fulfilment by Amazon</a></li>
+          <li><a href="#">Advertise Your Products</a></li>
+          <li><a href="#">Amazon Pay on Merchants</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Let Us Help You</h4>
+        <ul class="footer-links">
+          <li><a href="#">Your Account</a></li>
+          <li><a href="#">Returns Centre</a></li>
+          <li><a href="#">Recalls and Product Safety Alerts</a></li>
+          <li><a href="#">100% Purchase Protection</a></li>
+          <li><a href="#">Amazon App Download</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-services">
+      <a href="#">AbeBooks — Books, art &amp; collectibles</a>
+      <a href="#">Amazon Web Services — Scalable Cloud Computing Services</a>
+      <a href="#">Audible — Download Audio Books</a>
+      <a href="#">IMDb — Movies, TV &amp; Celebrities</a>
+      <a href="#">Shopbop — Designer Fashion Brands</a>
+      <a href="#">Amazon Business</a>
+      <a href="#">Prime Now — 2-Hour Delivery on Everyday Items</a>
+      <a href="#">Amazon Prime Music — 100 million songs, ad-free</a>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-left">
+        <label for="footer-lang">Language</label>
+        <select id="footer-lang">
+          <option>English - India</option>
+          <option>English - United States</option>
+        </select>
+      </div>
+      <div class="footer-center">© 2025 Amezone — Demo site for learning and testing. All rights reserved.</div>
+      <div class="footer-right"></div>
+    </div>
+  </footer>
+
+  </body>
+  </html>
+
+
+  <!-- Toast notification -->
+  <div id="toast" class="site-toast hidden" role="status" aria-live="polite"></div>
